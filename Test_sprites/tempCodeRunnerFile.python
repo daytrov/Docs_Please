@@ -1,0 +1,66 @@
+import pygame as pg
+ 
+WHITE = (255, 255, 255)
+RED = (225, 0, 50)
+GREEN = (0, 225, 0)
+BLUE = (0, 0, 225)
+ 
+pg.init()
+sc = pg.display.set_mode((400, 300))
+clock = pg.time.Clock()
+ 
+class Obj():
+    def __init__(self,x,y,color):
+        self.x = x
+        self.y = y
+        self.color = color
+        self.cube = pg.draw.rect(sc, color,(x, y, 20, 20))
+
+    def draw(self, sc):
+        current_image = self.cube
+        sc.blit(current_image, self.rect.topleft)
+ 
+
+obj1 = Obj(10,100,'Red')
+obj2 = Obj(100,200,'Blue')
+ 
+info = pg.Surface((100,80))
+font = pg.font.Font(None,20)
+text = ''
+ 
+running = 1
+while running:
+    sc.fill(WHITE)
+    info.fill((190,190,190))
+    for i in pg.event.get():
+        if i.type == pg.QUIT:
+            running = 0
+            
+        pressed = pg.mouse.get_pressed()
+        pos = pg.mouse.get_pos()
+        
+        if pressed[0]:
+            a = pos[0] - obj1.cube.x
+            b = obj1.cube.y - pos[1]
+ 
+            c = pos[0] - obj2.cube.x
+            d = obj2.cube.y - pos[1]
+            
+            if 0 < a <20 and 0 > b > -20:
+                text = 'Обьект 1'
+            elif 0 < c <20 and 0 > d > -20:
+                text = 'Обьект 2'
+            else:
+                info.fill((190,190,190))
+                text = ''                 
+ 
+    title = font.render(text, True, BLUE)
+    
+    sc.blit(info, (290,0))
+    sc.blit(title, (300,10))
+    obj1.draw(sc)
+    obj2.draw(sc)
+    pg.display.update()
+    clock.tick(30)
+    
+pg.quit()

@@ -24,10 +24,10 @@ class imageButton:
         current_image = self.hover_image if self.is_hovered else self.image
         screen.blit(current_image, self.rect.topleft)
 
-        font = pygame.font.Font(None, 40)
-        text_surface = font.render(self.text, True, (255,255,255))
-        text_rect = text_surface.get_rect(center = self.rect.center)
-        screen.blit(text_surface, text_rect)
+        # font = pygame.font.Font(None, 40)
+        # text_surface = font.render(self.text, True, (255,255,255))
+        # text_rect = text_surface.get_rect(center = self.rect.center)
+        # screen.blit(text_surface, text_rect)
     
     def check_hover(self, mouse_pos):
         self.is_hovered = self.rect.collidepoint(mouse_pos)
