@@ -47,45 +47,91 @@ personal_dict = {
     'bankCard': '',
     'bankDate': '',
     'bankCVC': '',
+    'EduName': '',
+    'EduDocNum': '',
+    'EduRegNumber': '',
+    'EduYear': ''
 }
+liar_personal_dict = {
+        'LastName': '',
+        'FirstName': '',
+        'FatherName': '',
+        'Gender': '',
+        'DateOfBirth': '',
+        'YearsOld': '',
+        'Phone': '',
+        'Login': '',
+        'Password': '',
+        'Email': '',
+        'Address': '',
+        'Country': '',
+        'Region': '',
+        'City': '',
+        'Street': '',
+        'Apartment': '',
+        'House': '',
+        'PasportNum': '',
+        'PasportCode': '',
+        'PasportOtd': '',
+        'PasportDate': '',
+        'inn_fiz': '',
+        'snils': '',
+        'oms': '',
+        'bankBIK': '',
+        'bankCorr': '',
+        'bankINN': '',
+        'bankNum': '',
+        'bankClient': '',
+        'bankCard': '',
+        'bankDate': '',
+        'bankCVC': '',
+        'EduName': '',
+        'EduDocNum': '',
+        'EduRegNumber': '',
+        'EduYear': ''
+    }
 
 
 #Функция convert_personal_info заполняет пустой лист (или заполненый инфой о прошлом человеке) инфой с api
 #Отельно вызывать не нужно, вызывается функцией get_info если новый человек, или first_iteration если первая итерация
 #Если потом будет нужно менять какую-либо инфу о человеке, делать это тут
-def convert_personal_info(data):
-    personal_dict["LastName"] = data["LastName"]
-    personal_dict["FirstName"] = data["FirstName"]
-    personal_dict["FatherName"] = data["FatherName"]
-    personal_dict["DateOfBirth"] = data["DateOfBirth"]
-    personal_dict["YearsOld"] = data["YearsOld"]
-    personal_dict["Phone"] = data["Phone"]
-    personal_dict["Login"] = data["Login"]
-    personal_dict["Password"] = data["Password"]
-    personal_dict["Email"] = data["Email"]
-    personal_dict["Address"] = data["Address"]
-    personal_dict["Country"] = data["Country"]
-    personal_dict["Region"] = data["Region"]
-    personal_dict["City"] = data["City"]
-    personal_dict["Street"] = data["Street"]
-    personal_dict["Apartment"] = data["Apartment"]
-    personal_dict["House"] = data["House"]
-    personal_dict["PasportNum"] = data["PasportNum"]
-    personal_dict["PasportCode"] = data["PasportCode"]
-    personal_dict["PasportOtd"] = data["PasportOtd"]
-    personal_dict["PasportDate"] = data["PasportDate"]
-    personal_dict["inn_fiz"] = data["inn_fiz"]
-    personal_dict["snils"] = data["snils"]
-    personal_dict["oms"] = data["oms"]
-    personal_dict["bankBIK"] = data["bankBIK"]
-    personal_dict["bankCorr"] = data["bankCorr"]
-    personal_dict["bankINN"] = data["bankINN"]
-    personal_dict["bankNum"] = data["bankNum"]
-    personal_dict["bankClient"] = data["bankClient"]
-    personal_dict["bankCard"] = data["bankCard"]
-    personal_dict["bankDate"] = data["bankDate"]
-    personal_dict["bankCVC"] = data["bankCVC"]
-    return personal_dict
+def convert_personal_info(data, dict):
+    dict["LastName"] = data["LastName"]
+    dict["FirstName"] = data["FirstName"]
+    dict["FatherName"] = data["FatherName"]
+    dict["DateOfBirth"] = data["DateOfBirth"]
+    dict["YearsOld"] = data["YearsOld"]
+    dict["Phone"] = data["Phone"]
+    dict["Login"] = data["Login"]
+    dict["Password"] = data["Password"]
+    dict["Email"] = data["Email"]
+    dict["Address"] = data["Address"]
+    dict["Country"] = data["Country"]
+    dict["Region"] = data["Region"]
+    dict["City"] = data["City"]
+    dict["Street"] = data["Street"]
+    dict["Apartment"] = data["Apartment"]
+    dict["House"] = data["House"]
+    dict["PasportNum"] = data["PasportNum"]
+    dict["PasportCode"] = data["PasportCode"]
+    dict["PasportOtd"] = data["PasportOtd"]
+    dict["PasportDate"] = data["PasportDate"]
+    dict["inn_fiz"] = data["inn_fiz"]
+    dict["snils"] = data["snils"]
+    dict["oms"] = data["oms"]
+    dict["bankBIK"] = data["bankBIK"]
+    dict["bankCorr"] = data["bankCorr"]
+    dict["bankINN"] = data["bankINN"]
+    dict["bankNum"] = data["bankNum"]
+    dict["bankClient"] = data["bankClient"]
+    dict["bankCard"] = data["bankCard"]
+    dict["bankDate"] = data["bankDate"]
+    dict["bankCVC"] = data["bankCVC"]
+    dict["EduName"] = data["EduName"]
+    dict["EduDocNum"] = data["EduDocNum"]
+    dict["EduRegNumber"] = data["EduRegNumber"]
+    dict["EduYear"] = data["EduYear"]
+    return dict
 
 
 #Функция get_info основная функция в файле, возвращает лист с инфой о человеке.
@@ -95,8 +141,7 @@ def convert_personal_info(data):
 def get_info(iteration):
     if iteration:
         data = get_data()
-        convert_personal_info(data)
-        return personal_dict
+        return convert_personal_info(data, personal_dict)
     else:
         return personal_dict
 
@@ -105,4 +150,9 @@ def get_info(iteration):
 #Возможно ее потом удалим за ненадобностью
 def first_iteration():
     data = get_data()
-    convert_personal_info(data)
+    convert_personal_info(data, personal_dict)
+
+
+def liar():
+    data = get_data()
+    return convert_personal_info(data, liar_personal_dict)
