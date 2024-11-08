@@ -86,7 +86,7 @@ def game_screen ():
     running = True
     index = -1
     while running:
-        screen.fill((0, 0, 0))
+        screen.blit(background_image, (0, 0))
         all_sprites.draw(screen)
         clock.tick(FPS)
 
