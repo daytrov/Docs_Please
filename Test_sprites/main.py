@@ -15,7 +15,7 @@ pygame.display.set_caption('DOCS PLEASE')
 clock = pygame.time.Clock()
 
 
-background_image = pygame.image.load('C:\\Users\сметана\\Documents\\GitHub\\Docs_Please\images\Background-img.jpg').convert_alpha()
+background_image = pygame.image.load('..\\images\\Background-img.jpg').convert_alpha()
 background_image = pygame.transform.scale(background_image, (1820, 980))
 
 
@@ -72,12 +72,12 @@ class imageButton:
 
 
 all_sprites = pygame.sprite.Group()
-person = Character(-200, 'C:\\Users\сметана\\Desktop\\Test_sprites\images\person.png')
-computer = imageButton(1000, 500, 350, 350, '','C:\\Users\сметана\\Desktop\\Test_sprites\images\комп.png', 'C:\\Users\сметана\\Desktop\\Test_sprites\images\\комп-hover.png','')
-table = imageButton(300, 500, 1400, 1000, '', 'C:\\Users\сметана\\Desktop\\Test_sprites\images\\Table-PNG-Photos.png', '', '')
-documents = imageButton(500, 500, 300, 300, '', 'C:\\Users\сметана\\Desktop\\Test_sprites\images\доки спрайт.png', '','')
+person = Character(-200, '..\\images\\person.png')
+computer = imageButton(1000, 500, 350, 350, '','..\\images\\комп.png', '..\\images\\комп-hover.png','')
+table = imageButton(300, 500, 1400, 1000, '', '..\\images\\Table-PNG-Photos.png', '', '')
+documents = imageButton(500, 500, 300, 300, '', '..\\images\\доки спрайт.png', '','')
 all_sprites.add(person)
-form = imageButton(500,200, 650, 650, "", 'C:\\Users\сметана\\Desktop\\Test_sprites\images\\form_comp.jpg','', '')
+form = imageButton(500,200, 650, 650, "", '..\\images\\form_comp.jpg','', '')
 
 
 

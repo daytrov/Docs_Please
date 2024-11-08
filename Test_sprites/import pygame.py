@@ -21,8 +21,8 @@ class imageButton:
         WIN.blit(self.image, self.rect.topleft)
 
 
-button_img = pygame.image.load("C:\\Users\сметана\\Desktop\\Test_sprites\images\комп-hover.png")
-form = pygame.image.load("C:\\Users\сметана\\Desktop\\Test_sprites\images\person.png")
+button_img = pygame.image.load("..\\images\\комп-hover.png")
+form = pygame.image.load("..\\images\person.png")
 
 
 index = -1
@@ -30,8 +30,8 @@ index = -1
 
 
 
-button = imageButton(100, 100, 350, 350,"C:\\Users\сметана\\Desktop\\Test_sprites\images\комп-hover.png")
-form = imageButton(100,100, 100, 100, "C:\\Users\сметана\\Desktop\\Test_sprites\images\person.png")
+button = imageButton(100, 100, 350, 350,"..\\images\\комп-hover.png")
+form = imageButton(100,100, 100, 100, "..\\images\person.png")
 
 while True:
     WIN.fill((0, 0, 0))
