@@ -78,7 +78,7 @@ computer = imageButton(1000, 500, 350, 350, '','images\\комп.png', 'images\\
 table = imageButton(300, 500, 1400, 1000, '', 'images\\Table-PNG-Photos.png', '', '')
 documents = imageButton(500, 500, 300, 300, '', 'images\\доки спрайт.png', '','')
 all_sprites.add(person)
-form = imageButton(500,200, 650, 650, "", 'images\\form_comp.jpg','', '')
+form = imageButton(500,200, 650, 650, "", 'images\\Заявление.png','', '')
 
 
 
