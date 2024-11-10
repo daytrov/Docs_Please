@@ -115,7 +115,13 @@ def game_screen():
     running = True
     while running:
         screen.blit(background_image, (0, 0))
+        all_sprites.draw(screen)
         clock.tick(FPS)
+        table.draw(screen)
+        person.update()
+        for interaction_items in [table, computer, documents]:
+            interaction_items.draw(screen)
+            interaction_items.check_hover(pygame.mouse.get_pos())
 
         # Обработка событий
         for event in pygame.event.get():
