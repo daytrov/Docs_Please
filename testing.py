@@ -14,10 +14,14 @@ lier_abitur_info = BD_api.liar()
 
 pygame.init()
 pygame.mixer.init()
+pygame.mixer.music.load('music\\Neon Dreams.mp3')
+pygame.mixer.music.play()
+pygame.mixer.music.set_volume(0.01)
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('DOCS PLEASE')
 clock = pygame.time.Clock()
 
+sound = pygame.mixer.Sound('music\\Neon Dreams.mp3')
 
 background_image = pygame.image.load('images\\Background-img.jpg').convert_alpha()
 background_image = pygame.transform.scale(background_image, (1820, 980))
@@ -107,7 +111,79 @@ computer = imageButton(1000, 500, 350, 350, '', 'images\\комп.png', 'images\
 table = imageButton(300, 500, 1400, 1000, '', 'images\\Table-PNG-Photos.png', '', '')
 documents = imageButton(500, 500, 300, 300, '', 'images\\доки спрайт.png', '', '')
 all_sprites.add(person)
-form = imageButton(500, 200, 650, 650, "", 'images\\Заявление.png', '', '')
+form = imageButton(500, 200, 650, 650, "", 'images\\form_comp.jpg', '', '')
+start_button = imageButton(WIDTH/2-(252/2), 600, 252, 78, "", "images\\Start-game.png", "images\\Start-game-hover.png", "sound\\startbut-sound.mp3")
+settings_button = imageButton(WIDTH/2-(252/2), 700, 252, 78, "", "images\\Settings-button.png", "images\\Settings-button-hover.png", "sound\\startbut-sound.mp3")
+logo_image = pygame.image.load('images\\logo.png').convert_alpha()
+background_image = pygame.image.load('images\\Background-img.jpg').convert_alpha()
+background_image = pygame.transform.scale(background_image, (1820, 980))
+back_button = imageButton(WIDTH/2-(252/2), 600, 252, 78, "", "images\\Back-button.png", "images\\Back-button-hover.png", "sound\\startbut-sound.mp3")
+
+
+def start_menu ():
+    running = True
+    while running:
+        screen.fill((0, 0, 0))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.USEREVENT and event.button == settings_button:
+                fade()
+                settings_menu()
+            if event.type == pygame.USEREVENT and event.button == start_button:
+                fade()
+                game_screen()
+            for btn in [start_button, settings_button]:
+                btn.handle_event(event)
+        screen.blit(logo_image, (0, 100))
+        for btn in [start_button, settings_button]:
+            btn.check_hover(pygame.mouse.get_pos())
+            btn.draw(screen) 
+        pygame.display.flip()
+
+def settings_menu ():
+    running = True
+    while running:
+        screen.fill((0,0,0))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
+                    fade()
+            if event.type == pygame.USEREVENT and event.button == back_button:
+                running = False
+                fade()
+            for btn in [back_button]:
+                btn.handle_event(event)
+        for btn in [back_button]:
+            btn.check_hover(pygame.mouse.get_pos())
+            btn.draw(screen) 
+        pygame.display.update()
+
+
+def fade ():
+    running = True
+    fade_alpha = 0
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+        fade_surface = pygame.Surface((WIDTH, HEIGHT))
+        fade_surface.fill((0,0,0))
+        fade_surface.set_alpha(fade_alpha)
+        screen.blit(fade_surface, (0, 0))
+        fade_alpha += 5
+        if fade_alpha >= 105:
+            fade_alpha = 255
+            running = False
+        pygame.display.update()
+        clock.tick(FPS)
 
 def game_screen():
     global big_docs
@@ -135,7 +211,10 @@ def game_screen():
                 running = False
                 pygame.quit()
                 sys.exit()
-
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    if computer.rect.collidepoint(event.pos):
+                        index += 1
             # Нажатие мыши
             if event.type == pygame.MOUSEBUTTONDOWN:
                 # Правая кнопка мыши: перемещение mini_docs
@@ -250,11 +329,33 @@ def game_screen():
                     #case "snils":
 
                     #case "application":
-
+        if index % 2 == 0:
+            form.draw(screen)
+            Abir_data = font.render("ДАННЫЕ АБИТУРИЕНТА", True, (0,0,0))
+            screen.blit(Abir_data, (550, 230))
+            PasportNum = font.render(f"Серия и номер паспорта: {abitur_info['PasportNum']}", True, (0,0,0))
+            screen.blit(PasportNum, (550, 250))
+            PasportCode = font.render(f"Номер подразделения: {abitur_info['PasportCode']}", True, (0,0,0))
+            screen.blit(PasportCode, (550, 270))
+            PasportOtd = font.render(f"Кем выдан: {abitur_info['PasportOtd']}", True, (0,0,0))
+            screen.blit(PasportOtd, (550, 290))
+            PasportDate = font.render(f"Дата выдачи: {abitur_info['PasportDate']}", True, (0,0,0))
+            screen.blit(PasportDate, (550, 310))
+            DateOfBirth = font.render(f"Дата рождения: {abitur_info['DateOfBirth']}", True, (0,0,0))
+            screen.blit(DateOfBirth, (550, 330))
+            FirstName = font.render(f"Имя: {abitur_info['FirstName']}", True, (0,0,0))
+            screen.blit(FirstName, (550, 350))
+            LastName = font.render(f"Фамилия: {abitur_info['LastName']}", True, (0,0,0))
+            screen.blit(LastName, (550, 370))
+            FatherName = font.render(f"Отчество: {abitur_info['Address']}", True, (0,0,0))
+            screen.blit(FatherName, (550, 390))
+            Living_place = font.render(f"Адресс регистрации: {abitur_info['Address']}", True, (0,0,0))
+            screen.blit(Living_place, (550, 410))
+            screen.blit(Living_place, (550, 430))
 
         pygame.display.flip()
 
 
 
 if __name__ == "__main__":
-    game_screen()
+    start_menu()
