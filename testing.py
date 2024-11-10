@@ -27,6 +27,16 @@ minidocs = {
     "snils": {"rect": pygame.Rect(400, 600, 100, 100), "image": pygame.image.load("images\\снилс_мини.png")},
     "application": {"rect": pygame.Rect(450, 650, 100, 150), "image": pygame.image.load("images\\заявление_мини.png")},
 }
+big_docs = {
+    "passport": {"rect": pygame.Rect(200, 50, 400, 500), "close_button": None, "is_visible": False, "image": pygame.image.load("images\\паспорт.png")},
+    "diploma": {"rect": pygame.Rect(200, 50, 400, 500), "close_button": None, "is_visible": False, "image": pygame.image.load("images\\Аттестат.png")},
+    "snils": {"rect": pygame.Rect(200, 50, 400, 500), "close_button": None, "is_visible": False, "image": pygame.image.load("images\\снилс.png")},
+    "application": {"rect": pygame.Rect(200, 50, 400, 500), "close_button": None, "is_visible": False, "image": pygame.image.load("images\\Заявление.png")},
+}
+for name, rectangle in big_docs.items():
+    rect = rectangle["rect"]
+    rectangle["close_button"] = pygame.Rect(rect.right - 30, rect.top + 10, 20, 20)
+
 font = pygame.font.Font(None, 20)
 
 
@@ -93,45 +103,31 @@ documents = imageButton(500, 500, 300, 300, '', 'images\\доки спрайт.p
 all_sprites.add(person)
 form = imageButton(500, 200, 650, 650, "", 'images\\Заявление.png', '', '')
 
-def draw_big_docs(key):
-    match key:
-        'passport':
-
-        'diploma':
-
-        'snils':
-
-        'application':
-
-
 def game_screen():
+    global big_docs
     selected_doc = None
     offset_x = 0
     offset_y = 0
     running = True
     index = -1
+    is_dragging = False
+    selected_big_doc = None
+    running = True
     while running:
         screen.blit(background_image, (0, 0))
-        all_sprites.draw(screen)
         clock.tick(FPS)
 
-        table.draw(screen)
-        person.update()
-
-        for interaction_items in [table, computer, documents]:
-            interaction_items.draw(screen)
-            interaction_items.check_hover(pygame.mouse.get_pos())
-
+        # Обработка событий
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
                 pygame.quit()
                 sys.exit()
+
+            # Нажатие мыши
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    if table.rect.collidepoint(event.pos):
-                        index += 1
-                if event.button == 3:  # Левая кнопка мыши
+                # Правая кнопка мыши: перемещение mini_docs
+                if event.button == 3:
                     for name, data in minidocs.items():
                         rect = data["rect"]
                         if rect.collidepoint(event.pos):
@@ -140,42 +136,79 @@ def game_screen():
                             offset_y = rect.y - event.pos[1]
                             break
 
-            elif event.type == pygame.MOUSEBUTTONUP:
-                if event.button == 3:  # Отпускание левой кнопки
-                    selected_doc = None
+                    for name, rect_data in big_docs.items():
+                        if rect_data["is_visible"] and rect_data["rect"].collidepoint(event.pos):
+                            is_dragging = True
+                            selected_big_doc = rect_data
+                            offset_x = rect_data["rect"].x - event.pos[0]
+                            offset_y = rect_data["rect"].y - event.pos[1]
 
+                            # Перемещение big_docs на передний план
+                            big_docs = {k: v for k, v in big_docs.items() if k != name}  # Удаляем выбранный элемент
+                            big_docs[name] = selected_big_doc  # Добавляем его в конец
+                            break
+
+
+                # Левая кнопка мыши: открытие big_docs
+                elif event.button == 1:
+                    for i, (name, data) in enumerate(minidocs.items()):
+                        if data["rect"].collidepoint(event.pos):
+                            # Показываем соответствующий big_docs
+                            big_doc = big_docs[name]
+                            big_doc["rect"] = pygame.Rect(
+                                data["rect"].x, data["rect"].y,
+                                big_doc["image"].get_width(), big_doc["image"].get_height()
+                            )
+                            # Расчёт позиции кнопки закрытия
+                            big_doc["close_button"] = pygame.Rect(
+                                big_doc["rect"].right - 30,
+                                big_doc["rect"].top + 10,
+                                20, 20
+                            )
+                            big_doc["is_visible"] = True
+                            break
+
+                    # Проверка кнопки закрытия
+                    for rect_data in big_docs.values():
+                        if rect_data["is_visible"] and rect_data["close_button"].collidepoint(event.pos):
+                            rect_data["is_visible"] = False
+
+            # Отпускание правой кнопки мыши
+            elif event.type == pygame.MOUSEBUTTONUP and event.button == 3:
+                selected_doc = None
+                is_dragging = False
+                selected_big_doc = None
+
+            # Перемещение объектов
             elif event.type == pygame.MOUSEMOTION:
+                # Перемещение mini_docs
                 if selected_doc:
-                    # Перемещение выбранного документа
-                    new_x = event.pos[0] + offset_x
-                    new_y = event.pos[1] + offset_y
-
-                    # Ограничение внутри большого прямоугольника
                     rect = minidocs[selected_doc]["rect"]
-                    rect.x = max(table.rect.x, min(table.rect.x + table.rect.width - rect.width, new_x))
-                    rect.y = max(table.rect.y, min(table.rect.y + table.rect.height - rect.height, new_y))
+                    rect.x = event.pos[0] + offset_x
+                    rect.y = event.pos[1] + offset_y
 
+                # Перемещение big_docs
+                elif is_dragging and selected_big_doc:
+                    selected_big_doc["rect"].x = event.pos[0] + offset_x
+                    selected_big_doc["rect"].y = event.pos[1] + offset_y
+                    # Перемещаем кнопку закрытия
+                    selected_big_doc["close_button"].x = selected_big_doc["rect"].right - 30
+                    selected_big_doc["close_button"].y = selected_big_doc["rect"].top + 10
+
+        # Рисование mini_docs
         for name, data in minidocs.items():
             rect = data["rect"]
             image = data["image"]
-            # Приподнимаем выбранный документ
-            if name == selected_doc:
-                # Увеличиваем размеры изображения временно
-                lifted_image = pygame.transform.scale(image, (rect.width + 10, rect.height + 10))
-                lifted_rect = lifted_image.get_rect(center=rect.center)
-                screen.blit(lifted_image, lifted_rect.topleft)
-            else:
-                # Обычное изображение
-                scaled_image = pygame.transform.scale(image, rect.size)
-                screen.blit(scaled_image, rect.topleft)
+            screen.blit(pygame.transform.scale(image, rect.size), rect.topleft)
 
+        # Рисование big_docs
+        for rect_data in big_docs.values():
+            if rect_data["is_visible"]:
+                screen.blit(rect_data["image"], rect_data["rect"].topleft)
+                pygame.draw.rect(screen, (255, 0, 0), rect_data["close_button"])
 
-        if index % 2 == 0:
-            asdf = 1
-            #отрубил пока
-            #form.draw(screen)
+        pygame.display.flip()
 
-        pygame.display.update()
 
 
 if __name__ == "__main__":
