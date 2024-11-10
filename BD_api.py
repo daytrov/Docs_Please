@@ -99,6 +99,7 @@ def convert_personal_info(data, dict):
     dict["LastName"] = data["LastName"]
     dict["FirstName"] = data["FirstName"]
     dict["FatherName"] = data["FatherName"]
+    dict["Gender"] = data["Gender"]
     dict["DateOfBirth"] = data["DateOfBirth"]
     dict["YearsOld"] = data["YearsOld"]
     dict["Phone"] = data["Phone"]

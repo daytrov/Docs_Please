@@ -1,10 +1,14 @@
 import pygame
 import sys
 import os
+import BD_api
 
 WIDTH = 1820
 HEIGHT = 980
 FPS = 60
+BD_api.first_iteration()
+abitur_info = BD_api.get_info(False)
+lier_abitur_info = BD_api.liar()
 
 #os.chdir(os.path.dirname(os.path.dirname(__file__)))
 
@@ -37,7 +41,9 @@ for name, rectangle in big_docs.items():
     rect = rectangle["rect"]
     rectangle["close_button"] = pygame.Rect(rect.right - 30, rect.top + 10, 20, 20)
 
-font = pygame.font.Font(None, 20)
+font = pygame.font.Font(None, 24)
+italic_font = pygame.font.Font(None, 24)
+italic_font.set_italic(True)
 
 
 
@@ -208,10 +214,43 @@ def game_screen():
             screen.blit(pygame.transform.scale(image, rect.size), rect.topleft)
 
         # Рисование big_docs
-        for rect_data in big_docs.values():
+        for name, rect_data in big_docs.items():
             if rect_data["is_visible"]:
                 screen.blit(rect_data["image"], rect_data["rect"].topleft)
                 pygame.draw.rect(screen, (255, 0, 0), rect_data["close_button"])
+                match name:
+                    case "passport":
+                        text_surface = font.render(f"{abitur_info['PasportOtd']}", True, (0, 0, 0))
+                        screen.blit(text_surface, (rect_data["rect"].x + 90, rect_data["rect"].y + 60))
+                        text_surface = font.render(f"{abitur_info['PasportDate']}", True, (0, 0, 0))
+                        screen.blit(text_surface, (rect_data["rect"].x + 140, rect_data["rect"].y + 100))
+                        text_surface = font.render(f"{abitur_info['PasportNum'][0:5]}", True, (0, 0, 0))
+                        screen.blit(text_surface, (rect_data["rect"].x + 400, rect_data["rect"].y + 100))
+                        text_surface = font.render(f"{abitur_info['PasportCode']}", True, (0, 0, 0))
+                        screen.blit(text_surface, (rect_data["rect"].x + 215, rect_data["rect"].y + 130))
+                        text_surface = font.render(f"{abitur_info['PasportNum'][4:]}", True, (0, 0, 0))
+                        screen.blit(text_surface, (rect_data["rect"].x + 400, rect_data["rect"].y + 130))
+                        text_surface = italic_font.render(f"{abitur_info['LastName']} {abitur_info['FirstName'][0]}. {abitur_info['FatherName'][0]}.", True, (0, 0, 0))
+                        screen.blit(text_surface, (rect_data["rect"].x + 360, rect_data["rect"].y + 315))
+                        text_surface = font.render(f"{abitur_info['LastName']}", True, (0, 0, 0))
+                        screen.blit(text_surface, (rect_data["rect"].x + 290, rect_data["rect"].y + 400))
+                        text_surface = font.render(f"{abitur_info['FirstName']}", True, (0, 0, 0))
+                        screen.blit(text_surface, (rect_data["rect"].x + 290, rect_data["rect"].y + 435))
+                        text_surface = font.render(f"{abitur_info['FatherName']}", True, (0, 0, 0))
+                        screen.blit(text_surface, (rect_data["rect"].x + 290, rect_data["rect"].y + 470))
+                        text_surface = font.render(f"{abitur_info['Gender'][0]}", True, (0, 0, 0))
+                        screen.blit(text_surface, (rect_data["rect"].x + 245, rect_data["rect"].y + 500))
+                        text_surface = font.render(f"{abitur_info['DateOfBirth']}", True, (0, 0, 0))
+                        screen.blit(text_surface, (rect_data["rect"].x + 430, rect_data["rect"].y + 500))
+                        text_surface = font.render(f"{abitur_info['Address']}", True, (0, 0, 0))
+                        screen.blit(text_surface, (rect_data["rect"].x + 185, rect_data["rect"].y + 560))
+                        screen.blit(text_surface, (rect_data["rect"].x + 185, rect_data["rect"].y + 640))
+                    #case "diploma":
+
+                    #case "snils":
+
+                    #case "application":
+
 
         pygame.display.flip()
 

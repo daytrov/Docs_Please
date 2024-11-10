@@ -17,12 +17,12 @@ pygame.display.set_caption('DOCS PLEASE')
 clock = pygame.time.Clock()
 all_sprites = pygame.sprite.Group()
 
-start_button = imageButton(WIDTH/2-(252/2), 600, 252, 78, "", "..\\images\\Start-game.png", "..\\images\\Start-game-hover.png", "..\\sound\\startbut-sound.mp3")
-settings_button = imageButton(WIDTH/2-(252/2), 700, 252, 78, "", "..\\images\\Settings-button.png", "..\\images\\Settings-button-hover.png", "..\\sound\\startbut-sound.mp3")
-logo_image = pygame.image.load('..\\images\\logo.png').convert_alpha()
-background_image = pygame.image.load('..\\images\\Background-img.jpg').convert_alpha()
+start_button = imageButton(WIDTH/2-(252/2), 600, 252, 78, "", "images\\Start-game.png", "images\\Start-game-hover.png", "sound\\startbut-sound.mp3")
+settings_button = imageButton(WIDTH/2-(252/2), 700, 252, 78, "", "images\\Settings-button.png", "images\\Settings-button-hover.png", "sound\\startbut-sound.mp3")
+logo_image = pygame.image.load('images\\logo.png').convert_alpha()
+background_image = pygame.image.load('images\\Background-img.jpg').convert_alpha()
 background_image = pygame.transform.scale(background_image, (1820, 980))
-back_button = imageButton(WIDTH/2-(252/2), 600, 252, 78, "", "..\\images\\Back-button.png", "..\\images\\Back-button-hover.png", "..\\sound\\startbut-sound.mp3")
+back_button = imageButton(WIDTH/2-(252/2), 600, 252, 78, "", "images\\Back-button.png", "images\\Back-button-hover.png", "sound\\startbut-sound.mp3")
 
 
 def start_menu ():
